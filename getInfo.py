@@ -40,7 +40,7 @@ def readInfo():
 
 	  	output = subprocess.check_output(["/root/Raspberry-Weather/Adafruit_DHT", "2302", "4"]);
   		print output
- 	 	matches = re.search("Temp =\s+([0-9.]+)", output)
+  		matches = re.search("Temp =s+([-]?[0-9.]+)", output)
   		if (not matches):
 			time.sleep(3)
 			continue
