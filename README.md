@@ -2,4 +2,4 @@ Raspberry Weather
 ==============================
 
 
-This code helps you read temperatures along with humidity and save both in your database. You need to configure your weather station in order to use this code. Read more on www.raspberryweather.com.
+This code is an expansion, it enables you to read the barometric pressure and in the near future the wind speed as well. All credits go to A. Catorcini. Read more on  http://www.raspberryweather.com/pressure-and-wind-expansion/ 

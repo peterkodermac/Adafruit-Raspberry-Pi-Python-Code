@@ -9,12 +9,14 @@ import time
 import MySQLdb as mdb 
 import datetime
 
+#importing the library for the pressure sensor
+import Adafruit_BMP.BMP085 as BMP085
+
 databaseUsername="YOUR USERNAME USUALLY ROOT"
-databasePassword="YOUR PASSWORD!" 
-databaseName="WordpressDB" #do not change unless you named the Wordpress database with some other name
+databasePassword="YOUR PASSWORD" 
+databaseName="WordPressDB" #do not change unless you named the Wordpress database with some other name
 
-def saveToDatabase(temperature,humidity):
-
+def saveToDatabase(temperature,humidity,pressure):
 	con=mdb.connect("localhost", databaseUsername, databasePassword, databaseName)
         currentDate=datetime.datetime.now().date()
 
@@ -25,27 +27,29 @@ def saveToDatabase(temperature,humidity):
 	
         with con:
                 cur=con.cursor()
-		
-                cur.execute("INSERT INTO temperatures (temperature,humidity, dateMeasured, hourMeasured) VALUES (%s,%s,%s,%s)",(temperature,humidity,currentDate, minutes))
-
-		print "Saved temperature"
+                cur.execute("INSERT INTO temperatures (temperature,humidity, dateMeasured, hourMeasured, pressure) VALUES (%s,%s,%s,%s, %s)",(temperature,humidity,currentDate, minutes, pressure))
 		return "true"
 
 
 def readInfo():
+
+	#read the pressure first. You could use this also for the temperature if you want to
+	sensor = BMP085.BMP085(mode=BMP085.BMP085_ULTRAHIGHRES)
+	pressure = sensor.read_pressure()
+	print 'Pressure = {0:0.2f} Pa'.format(pressure)
+	#temperature = sensor.read_temperature()
+
 	temperatureSaved="false" #keep on reading till you get the info
 
 	while(temperatureSaved=="false"):
   	# Run the DHT program to get the humidity and temperature readings!
-
 	  	output = subprocess.check_output(["/root/Raspberry-Weather/Adafruit_DHT", "2302", "4"]);
-  		print output
+		print output
   		matches = re.search("Temp =\s+([-]?[0-9.]+)", output)
   		if (not matches):
 			time.sleep(3)
 			continue
 	  	temp = float(matches.group(1))
-  
   		# search for humidity printout
   		matches = re.search("Hum =\s+([0-9.]+)", output)
   		if (not matches):
@@ -56,8 +60,7 @@ def readInfo():
 
   		print "Temperature: %.1f C" % temp
   		print "Humidity:    %s %%" % humidity
-
-		return saveToDatabase(temp,humidity)
+		return saveToDatabase(temp,humidity, pressure)
 
 #check if table is created or if we need to create one
 try:
