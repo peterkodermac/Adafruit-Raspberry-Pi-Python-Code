@@ -4,5 +4,6 @@ CREATE TABLE IF NOT EXISTS `temperatures` (
   `humidity` varchar(20) NOT NULL,
   `dateMeasured` date NOT NULL,
   `hourMeasured` int(128) NOT NULL,
-  PRIMARY KEY (`id`)
+ `pressure` double NOT NULL,
+ PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
