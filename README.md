@@ -11,9 +11,13 @@ The PressureWind branch (http://goo.gl/JXv3Ht) created by A. Catorcini is an exp
 First, you need to install the DHT22 library by Adafruit and some additional software:
 
 > git clone https://github.com/adafruit/Adafruit_Python_DHT.git
+
 > cd Adafruit_Python_DHT
+
 > sudo apt-get update
+
 > sudo apt-get install build-essential python-dev python-openssl
+
 > sudo python setup.py install
 
 If everything is wired correctly, test the setup with
